@@ -1,33 +1,40 @@
 # SQL Homework
 
 ## SQL Tutorial
-### Select
-Select all the different values from the Country column in the Customers table.
+### SELECT
+```{.sql}
+Select all the different values
 SELECT DISTINCT Country FROM Customers;
+```
 
-### Where
-Select all records where the City column is NOT the value "Berlin".
-select * from customers where city <> 'Berlin';
+### WHERE
+```{.sql}
+Where the City column is NOT the value "Berlin".
+Select * from customers where city <> 'Berlin';
+```
 
-### Order by
-Select all records from the Customers table, sort the result reversed alphabetically by the column City.
+### ORDER BY
+```{.sql}
+Sort the result reversed alphabetically by the column City.
 SELECT * FROM Customers Order by city desc;
 
-Select all records from the Customers table, sort the result alphabetically, first by the column Country, then, by the column City.
+Sort the result alphabetically, first by the column Country, then, by the column City.
 SELECT * FROM Customers order by country, city;
+```
 
-### Insert
-Insert a new record in the Customers table.
-
+### INSERT
+```{.sql}
 INSERT INTO table_name
 VALUES (value1, value2, value3, ...);
 
+특정 col에만 삽입할 경우
 INSERT INTO table_name (column1, column2, column3, ...)
 VALUES (value1, value2, value3, ...);
+```
 
 ### NULL
-It is not possible to test for NULL values with comparison operators, such as =, <, or <>.
-
+IS, IS NOT을 사용함
+```{.sql}
 SELECT column_names
 FROM table_name
 WHERE column_name IS NULL;
@@ -35,28 +42,29 @@ WHERE column_name IS NULL;
 SELECT column_names
 FROM table_name
 WHERE column_name IS NOT NULL;
+```
 
-### Update
+### UPDATE
+```{.sql}
 UPDATE table_name
 SET column1 = value1, column2 = value2, ...
-WHERE condition;
+WHERE condition; => 적지 않을 경우 모든 데이터가 바뀌므로 빼먹지 않도록 주의
+```
 
-Be careful when updating records in a table! Notice the WHERE clause in the UPDATE statement. The WHERE clause specifies which record(s) that should be updated. If you omit the WHERE clause, all records in the table will be updated!
-
-### Delete
+### DELETE
+```{.sql}
 DELETE FROM table_name
-WHERE condition;
+WHERE condition; => update와 마찬가지로 빼먹지 않도록 주의
+```
 
-Be careful when deleting records in a table! Notice the WHERE clause in the DELETE statement. The WHERE clause specifies which record(s) should be deleted. If you omit the WHERE clause, all records in the table will be deleted!
+### LIKE, WILDCARDS
+* % - The percent sign represents zero, one, or multiple characters
+* _ - The underscore represents a single character
+    - WHERE CustomerName LIKE 'a%'	Finds any values that start with "a"
+    - WHERE CustomerName LIKE '%or%'	Finds any values that have "or" in any position
+    - WHERE CustomerName LIKE '_r%'	Finds any values that have "r" in the second position
 
- ### Like
-% - The percent sign represents zero, one, or multiple characters
-_ - The underscore represents a single character
-
-WHERE CustomerName LIKE 'a%'	Finds any values that start with "a"
-WHERE CustomerName LIKE '%or%'	Finds any values that have "or" in any position
-WHERE CustomerName LIKE '_r%'	Finds any values that have "r" in the second position
-
+```{.sql}
 Select all records where the value of the City column does NOT start with the letter "a".
 SELECT * FROM Customers where city not like 'a%';
 
@@ -65,18 +73,104 @@ SELECT * FROM Customers WHERE City LIKE '[abc]%';
 
 Select all records where the first letter of the City is NOT an "a" or a "b" or a "c".
 SELECT * FROM Customers WHERE City LIKE '[!abc]%';
-
-### In
+```
+### IN
+```{.sql}
 SELECT * FROM Customers
 WHERE Country IN ('Germany', 'France', 'UK');
 
 SELECT * FROM Customers
 WHERE Country NOT IN ('Germany', 'France', 'UK');
+```
 
-### Join
+### ALIAS
+```{.sql}
+SELECT column_name AS alias_name
+FROM table_name;
+
+SELECT column_name(s)
+FROM table_name AS alias_name;
+```
+
+### JOIN
+```{.sql}
+SELECT column_name(s)
+FROM table1
+INNER JOIN table2 ON table1.column_name = table2.column_name;
+
+SELECT column_name(s)
+FROM table1
+LEFT JOIN table2 ON table1.column_name = table2.column_name;
+
+SELECT column_name(s)
+FROM table1
+RIGHT JOIN table2 ON table1.column_name = table2.column_name;
+
+SELECT column_name(s)
+FROM table1
+FULL OUTER JOIN table2 ON table1.column_name = table2.column_name;
+```
+<img src="https://user-images.githubusercontent.com/10782878/46259512-5cfefd00-c515-11e8-86da-0921b7dfb62e.png" width="500" height="200"></img>
+
+#### SELF JOIN
+```{.sql}
+SELECT A.CustomerName AS CustomerName1, B.CustomerName AS CustomerName2, A.City
+FROM Customers A, Customers B
+WHERE A.CustomerID <> B.CustomerID
+AND A.City = B.City 
+ORDER BY A.City;
+```
+
+### UNION
+```{.sql}
+Only distinct value, 자동으로 정렬
+SELECT City FROM Customers
+UNION
+SELECT City FROM Suppliers
+ORDER BY City;  => 생략 가능
+
+duplicate values also
+SELECT City FROM Customers
+UNION ALL
+SELECT City FROM Suppliers
+ORDER BY City;
+```
+
+### GROUP BY
+```{.sql}
+SELECT COUNT(CustomerID), Country
+FROM Customers
+GROUP BY Country
+ORDER BY COUNT(CustomerID) DESC;
+```
+
+### HAVING
+```{.sql}
+The HAVING clause was added to SQL because the WHERE keyword could not be used with aggregate functions.
+
+SELECT column_name(s)
+FROM table_name
+WHERE condition
+GROUP BY column_name(s)
+HAVING condition
+ORDER BY column_name(s);
+
+SELECT Employees.LastName, COUNT(Orders.OrderID) AS NumberOfOrders
+FROM Orders
+INNER JOIN Employees ON Orders.EmployeeID = Employees.EmployeeID
+WHERE LastName = 'Davolio' OR LastName = 'Fuller'
+GROUP BY LastName
+HAVING COUNT(Orders.OrderID) > 25;
+```
+
+### EXISTS
+```{.sql}
+SELECT SupplierName
+FROM Suppliers
+WHERE EXISTS (SELECT ProductName FROM Products WHERE SupplierId = Suppliers.supplierId AND Price < 20);
+```
 
 ## SQL Database
-
 ### CREATE
 ```{.sql}
 이미 존재하는 테이블을 이용해서 테이블 생성하기
@@ -245,7 +339,7 @@ CREATE TABLE Persons (
 
 ALTER TABLE Persons AUTO_INCREMENT=100;
 ```
-### Date
+### DATE
 * DATE - format YYYY-MM-DD
 * DATETIME - format: YYYY-MM-DD HH:MI:SS
 * TIMESTAMP - format: YYYY-MM-DD HH:MI:SS
