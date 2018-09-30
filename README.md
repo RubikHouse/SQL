@@ -197,27 +197,28 @@ CREATE TABLE Persons (
 ALTER TABLE Persons
 ADD CHECK (Age>=18);
 
-ALTER TABLE Persons
-ADD CONSTRAINT CHK_PersonAge CHECK (Age>=18 AND City='Sandnes');
+ALTER TABLE Persons  
+ADD CONSTRAINT CHK_PersonAge CHECK (Age>=18 AND City='Sandnes');  
 
-ALTER TABLE Persons
-DROP CHECK CHK_PersonAge;
+ALTER TABLE Persons  
+DROP CHECK CHK_PersonAge;  
 
 ### DEFAULT
-CREATE TABLE Persons (
-    City varchar(255) DEFAULT 'Sandnes'
-);
+```{.sql}
+CREATE TABLE Persons (  
+    City varchar(255) DEFAULT 'Sandnes'  
+);  
 
-CREATE TABLE Orders (
-    OrderDate date DEFAULT GETDATE()
-);
+CREATE TABLE Orders (  
+    OrderDate date DEFAULT GETDATE()  
+);  
 
-ALTER TABLE Persons
-ALTER City SET DEFAULT 'Sandnes';
+ALTER TABLE Persons  
+ALTER City SET DEFAULT 'Sandnes';  
 
 ALTER TABLE Persons
 ALTER City DROP DEFAULT;
-
+```
 ### INDEX
 CREATE (UNIQUE) INDEX idx_pname
 ON Persons (LastName, FirstName);
