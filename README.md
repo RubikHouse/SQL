@@ -78,8 +78,8 @@ WHERE Country NOT IN ('Germany', 'France', 'UK');
 ## SQL Database
 
 ### CREATE
-이미 존재하는 테이블을 이용해서 테이블 생성하기
 ```{.sql}
+이미 존재하는 테이블을 이용해서 테이블 생성하기
 CREATE TABLE new_table_name AS
     SELECT column1, column2,...
     FROM existing_table_name
@@ -250,6 +250,3 @@ ALTER TABLE Persons AUTO_INCREMENT=100;
 * DATETIME - format: YYYY-MM-DD HH:MI:SS
 * TIMESTAMP - format: YYYY-MM-DD HH:MI:SS
 * YEAR - format YYYY or YY
-
-
-- [이한영](https://lhy.kr/)
