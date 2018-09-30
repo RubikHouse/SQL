@@ -1,10 +1,17 @@
 # SQL Homework
 
-## SQL Tutorial
+## SQL Tutorial - MySQL
+
 ### SELECT
 ```{.sql}
 Select all the different values
 SELECT DISTINCT Country FROM Customers;
+
+number만큼만 출력하기
+SELECT column_name(s)
+FROM table_name
+WHERE condition
+LIMIT number;
 ```
 
 ### WHERE
