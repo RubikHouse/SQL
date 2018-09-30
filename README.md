@@ -1,64 +1,4 @@
 # SQL Homework
-<div>
-<table class="w3-table-all notranslate">
-  <tr>
-    <th>CustomerID</th>
-    <th>CustomerName</th>
-    <th>ContactName</th>
-    <th>Address</th>
-    <th>City</th>
-    <th>PostalCode</th>
-    <th>Country</th>
-  </tr>
-  <tr>
-    <td>1<br><br></td>
-    <td>Alfreds Futterkiste</td>
-    <td>Maria Anders</td>
-    <td>Obere Str. 57</td>
-    <td>Berlin</td>
-    <td>12209</td>
-    <td>Germany</td>
-  </tr>
-  <tr>
-    <td>2</td>
-    <td>Ana Trujillo Emparedados y helados</td>
-    <td>Ana Trujillo</td>
-    <td>Avda. de la Constitución 2222</td>
-    <td>México D.F.</td>
-    <td>05021</td>
-    <td>Mexico</td>
-  </tr>
-  <tr>
-    <td>3</td>
-    <td>Antonio Moreno Taquería</td>
-    <td>Antonio Moreno</td>
-    <td>Mataderos 2312</td>
-    <td>México D.F.</td>
-    <td>05023</td>
-    <td>Mexico</td>
-  </tr>
-  <tr>
-    <td>4<br><br></td>
-    <td>Around the Horn</td>
-    <td>Thomas Hardy</td>
-    <td>120 Hanover Sq.</td>
-    <td>London</td>
-    <td>WA1 1DP</td>
-    <td>UK</td>
-  </tr>
-  <tr>
-    <td>5</td>
-    <td>Berglunds snabbköp</td>
-    <td>Christina Berglund</td>
-    <td>Berguvsvägen 8</td>
-    <td>Luleå</td>
-    <td>S-958 22</td>
-    <td>Sweden</td>
-  </tr>
-</table>
-</div>
-
------------------------
 
 ## SQL Tutorial
 ### Select
@@ -136,5 +76,168 @@ WHERE Country NOT IN ('Germany', 'France', 'UK');
 ### Join
 
 ## SQL Database
+
+### CREATE
+이미 존재하는 테이블을 이용해서 테이블 생성하기
+CREATE TABLE new_table_name AS
+    SELECT column1, column2,...
+    FROM existing_table_name
+    WHERE ....;
+### DROP
+DROP TABLE table_name;
+
+테이블을 지우지 않고 데이터만 지우고 싶을 때
+TRUNCATE TABLE table_name;
+
+### ALTER
+ALTER TABLE table_name
+ADD column_name datatype;
+
+ALTER TABLE table_name
+DROP COLUMN column_name;
+
+ALTER TABLE table_name
+MODIFY COLUMN column_name datatype;
+
+### CONSTRAINTS
+CREATE TABLE table_name (
+    column1 datatype constraint,
+    column2 datatype constraint,
+    ....
+);
+
+* NOT NULL - Ensures that a column cannot have a NULL value
+* UNIQUE - Ensures that all values in a column are different
+* PRIMARY KEY - A combination of a NOT NULL and UNIQUE. Uniquely identifies each row in a table
+* FOREIGN KEY - Uniquely identifies a row/record in another table
+* CHECK - Ensures that all values in a column satisfies a specific condition
+* DEFAULT - Sets a default value for a column when no value is specified
+* INDEX - Used to create and retrieve data from the database very quickly
+
+### UNIQUE
+CREATE TABLE Persons (
+    ID int NOT NULL,
+    UNIQUE (ID)
+);
+
+CREATE TABLE Persons (
+    ID int NOT NULL,
+    LastName varchar(255) NOT NULL,
+    CONSTRAINT UC_Person UNIQUE (ID,LastName)
+);
+
+ALTER TABLE Persons
+ADD UNIQUE (ID);
+
+ALTER TABLE Persons
+ADD CONSTRAINT UC_Person UNIQUE (ID,LastName);
+
+ALTER TABLE Persons
+DROP INDEX UC_Person;
+
+### PRIMARY KEY
+CREATE TABLE Persons (
+    ID int NOT NULL,
+    PRIMARY KEY (ID)
+);
+
+CREATE TABLE Persons (
+    ID int NOT NULL,
+    LastName varchar(255) NOT NULL,
+    CONSTRAINT PK_Person PRIMARY KEY (ID,LastName)
+);
+
+ALTER TABLE Persons
+ADD PRIMARY KEY (ID);
+
+ALTER TABLE Persons
+ADD CONSTRAINT PK_Person PRIMARY KEY (ID,LastName);
+
+ALTER TABLE Persons
+DROP PRIMARY KEY;
+
+### FOREIGN KEY
+CREATE TABLE Orders (
+    OrderID int NOT NULL,
+    PersonID int,
+    PRIMARY KEY (OrderID),
+    FOREIGN KEY (PersonID) REFERENCES Persons(PersonID)
+);
+
+CREATE TABLE Orders (
+    OrderID int NOT NULL,
+    PersonID int,
+    PRIMARY KEY (OrderID),
+    CONSTRAINT FK_PersonOrder FOREIGN KEY (PersonID)
+    REFERENCES Persons(PersonID)
+);
+
+ALTER TABLE Orders
+ADD FOREIGN KEY (PersonID) REFERENCES Persons(PersonID);
+
+ALTER TABLE Orders
+ADD CONSTRAINT FK_PersonOrder
+FOREIGN KEY (PersonID) REFERENCES Persons(PersonID);
+
+ALTER TABLE Orders
+DROP FOREIGN KEY FK_PersonOrder;
+
+### CHECK
+CREATE TABLE Persons (
+    Age int,
+    CHECK (Age>=18)
+);
+
+CREATE TABLE Persons (
+    Age int,
+    City varchar(255),
+    CONSTRAINT CHK_Person CHECK (Age>=18 AND City='Sandnes')
+);
+
+ALTER TABLE Persons
+ADD CHECK (Age>=18);
+
+ALTER TABLE Persons
+ADD CONSTRAINT CHK_PersonAge CHECK (Age>=18 AND City='Sandnes');
+
+ALTER TABLE Persons
+DROP CHECK CHK_PersonAge;
+
+### DEFAULT
+CREATE TABLE Persons (
+    City varchar(255) DEFAULT 'Sandnes'
+);
+
+CREATE TABLE Orders (
+    OrderDate date DEFAULT GETDATE()
+);
+
+ALTER TABLE Persons
+ALTER City SET DEFAULT 'Sandnes';
+
+ALTER TABLE Persons
+ALTER City DROP DEFAULT;
+
+### INDEX
+CREATE (UNIQUE) INDEX idx_pname
+ON Persons (LastName, FirstName);
+
+ALTER TABLE Persons
+DROP INDEX UC_Person;
+
+### AUTO INCREMENT
+CREATE TABLE Persons (
+    ID int NOT NULL AUTO_INCREMENT,
+    PRIMARY KEY (ID)
+);
+
+ALTER TABLE Persons AUTO_INCREMENT=100;
+
+### Date
+* DATE - format YYYY-MM-DD
+* DATETIME - format: YYYY-MM-DD HH:MI:SS
+* TIMESTAMP - format: YYYY-MM-DD HH:MI:SS
+* YEAR - format YYYY or YY
+
 
 - [이한영](https://lhy.kr/)
