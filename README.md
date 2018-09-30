@@ -79,17 +79,21 @@ WHERE Country NOT IN ('Germany', 'France', 'UK');
 
 ### CREATE
 이미 존재하는 테이블을 이용해서 테이블 생성하기
+```{.sql}
 CREATE TABLE new_table_name AS
     SELECT column1, column2,...
     FROM existing_table_name
     WHERE ....;
+```
 ### DROP
+```{.sql}
 DROP TABLE table_name;
 
 테이블을 지우지 않고 데이터만 지우고 싶을 때
 TRUNCATE TABLE table_name;
-
+```
 ### ALTER
+```{.sql}
 ALTER TABLE table_name
 ADD column_name datatype;
 
@@ -98,14 +102,15 @@ DROP COLUMN column_name;
 
 ALTER TABLE table_name
 MODIFY COLUMN column_name datatype;
-
+```
 ### CONSTRAINTS
+```{.sql}
 CREATE TABLE table_name (
     column1 datatype constraint,
     column2 datatype constraint,
     ....
 );
-
+```
 * NOT NULL - Ensures that a column cannot have a NULL value
 * UNIQUE - Ensures that all values in a column are different
 * PRIMARY KEY - A combination of a NOT NULL and UNIQUE. Uniquely identifies each row in a table
@@ -115,6 +120,7 @@ CREATE TABLE table_name (
 * INDEX - Used to create and retrieve data from the database very quickly
 
 ### UNIQUE
+```{.sql}
 CREATE TABLE Persons (
     ID int NOT NULL,
     UNIQUE (ID)
@@ -134,8 +140,9 @@ ADD CONSTRAINT UC_Person UNIQUE (ID,LastName);
 
 ALTER TABLE Persons
 DROP INDEX UC_Person;
-
+```
 ### PRIMARY KEY
+```{.sql}
 CREATE TABLE Persons (
     ID int NOT NULL,
     PRIMARY KEY (ID)
@@ -155,8 +162,9 @@ ADD CONSTRAINT PK_Person PRIMARY KEY (ID,LastName);
 
 ALTER TABLE Persons
 DROP PRIMARY KEY;
-
+```
 ### FOREIGN KEY
+```{.sql}
 CREATE TABLE Orders (
     OrderID int NOT NULL,
     PersonID int,
@@ -181,8 +189,9 @@ FOREIGN KEY (PersonID) REFERENCES Persons(PersonID);
 
 ALTER TABLE Orders
 DROP FOREIGN KEY FK_PersonOrder;
-
+```
 ### CHECK
+```{.sql}
 CREATE TABLE Persons (
     Age int,
     CHECK (Age>=18)
@@ -202,7 +211,7 @@ ADD CONSTRAINT CHK_PersonAge CHECK (Age>=18 AND City='Sandnes');
 
 ALTER TABLE Persons  
 DROP CHECK CHK_PersonAge;  
-
+```
 ### DEFAULT
 ```{.sql}
 CREATE TABLE Persons (  
@@ -220,20 +229,22 @@ ALTER TABLE Persons
 ALTER City DROP DEFAULT;
 ```
 ### INDEX
+```{.sql}
 CREATE (UNIQUE) INDEX idx_pname
 ON Persons (LastName, FirstName);
 
 ALTER TABLE Persons
 DROP INDEX UC_Person;
-
+```
 ### AUTO INCREMENT
+```{.sql}
 CREATE TABLE Persons (
     ID int NOT NULL AUTO_INCREMENT,
     PRIMARY KEY (ID)
 );
 
 ALTER TABLE Persons AUTO_INCREMENT=100;
-
+```
 ### Date
 * DATE - format YYYY-MM-DD
 * DATETIME - format: YYYY-MM-DD HH:MI:SS
